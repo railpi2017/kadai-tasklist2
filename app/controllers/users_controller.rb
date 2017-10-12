@@ -7,6 +7,10 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    if current_user != @user
+      flash[:danger] = '他のユーザーの詳細を見ることはできません。'
+      redirect_to root_url
+    end
     @tasks = @user.tasks.order('created_at DESC')
     counts(@user)
   end
